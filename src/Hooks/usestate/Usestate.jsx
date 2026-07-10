@@ -9,7 +9,7 @@ export const Usestate = () => {
     return (
 
         <div>
-
+            <label>user name </label>
             <input 
             type="text" 
             name="name" 
