@@ -22,22 +22,48 @@ export const Usestate = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const tasks = [...form,data]
+        const tasks = [...form, data]
         setForm(tasks)
-
-        
     }
 
-        console.log(form);
+    // 3.shopping product qty 
+    const [product, setProduct] = useState([
+        {
+            name: "Iphone 15 pro",
+            brand: "apple Iphone",
+            price: "72000",
+            qty: 1
+        }
+    ])
+
+    // const product_price = product.reduce((acc, item) => acc + item.price * item.qty, 0)
+    // console.log(product_price)
+
+    const addQty = (itemindex) => {
+        const updated_product = product.map((item, index) =>
+            index === itemindex ? { ...item, qty: item.qty + 1 } : item
+        )
+        setProduct(updated_product)
+    }
+
+    const removeQty = (itemindex) => {
+        const updated_product = product.map((item, index) =>
+            index === itemindex ? { ...item, qty: Math.max(1, item.qty - 1) } : item)
+        setProduct(updated_product)
+    }
+
 
 
     return (
 
-        <section className='flex flex-col items-center pt-10 min-h-screen'>
+        <section className='flex flex-col min-h-screen mt-10 items-start w-full p-5'>
+
+            <h1 className='font-bold text-3xl text-center underline mb-2'>USESTATE HOOK</h1>
 
             {/* 1 counter */}
-            <div>
-                <h1 className='font-bold text-xl'>1.counter app</h1>
+            <div className=''>
+                <h1 className='font-bold text-xl underline'>1.counter app</h1>
+
                 <p className='font-semibold text-xl'>counter {counter} </p>
                 <div className='grid grid-cols-3 gap-2'>
                     <button className='bg-red-600 text-white font-semibold px-2 py-1 rounded'
@@ -58,8 +84,8 @@ export const Usestate = () => {
             </div>
 
             {/* 2. form data*/}
-            <div>
-                <h1 className='font-bold text-xl'>2.form data</h1>
+            <div className='mt-5 p-2'>
+                <h1 className='font-bold text-xl underline mb-2'>2.form data</h1>
 
                 <form className='border p-2'
                     onSubmit={handleSubmit}>
@@ -88,8 +114,10 @@ export const Usestate = () => {
                 </form>
 
                 <h1 className='font-bold text-xl'>lists</h1>
+
+                {form.length === 0 && <p>no list</p>}
                 {
-                    form.map((item,index) => (
+                    form.map((item, index) => (
                         <div key={index}>
                             <h1 ><strong>Name :</strong>{item.name}</h1>
                             <h1><strong>Email :</strong>{item.email}</h1>
@@ -97,6 +125,33 @@ export const Usestate = () => {
                     ))
                 }
             </div>
+
+            {/* 3.product add qty */}
+            <div className='my-5'>
+                <h1 className='font-bold text-xl underline'>3.Product</h1>
+                {
+                    product.map((item, index) => (
+                        <div key={index}>
+                            <h2 className='text-lg'><strong>Model Name: </strong>{item.name}</h2>
+                            <h2 className='text-lg'><strong>model Brand: </strong>{item.brand}</h2>
+                            <h2 className='text-lg'><strong>Model Price : </strong>{item.price * item.qty}</h2>
+                            <h1 className='text-lg'><strong>Model Qty : </strong>{item.qty}</h1>
+                            <div className='grid grid-cols-3 gap-2'>
+                                <button
+                                    onClick={() => { removeQty(index) }}
+                                    className='bg-red-600 text-white font-semibold px-2 py-1 rounded'
+                                >remove</button>
+                                <button className='bg-green-600 text-white font-semibold px-2 py-1 rounded'
+                                    onClick={() => { addQty(index) }}>
+                                    add
+                                </button>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+
+            
         </section>
     )
 }
